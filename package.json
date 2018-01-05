@@ -4,11 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "serve": "live-server public/",
+    "dev": "webpack-dev-server",
     "build:dev": "webpack",
     "build": "webpack -p --env production",
-    "start": "webpack-dev-server",
-    "test": "jest"
+    "start": "node server/server.js",
+    "test": "jest",
+    "heroku-postbuild": "yarn run build"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
