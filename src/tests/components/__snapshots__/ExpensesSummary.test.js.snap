@@ -7,7 +7,7 @@ exports[`should render ExpensesSummary with 1 expense 1`] = `
      
     expenses
      totalling 
-    $235.00
+    $2.35
   </h1>
 </div>
 `;
@@ -19,7 +19,7 @@ exports[`should render ExpensesSummary with many expenses 1`] = `
      
     expenses
      totalling 
-    $1,239,087.00
+    $12,390.87
   </h1>
 </div>
 `;
