@@ -6,7 +6,8 @@ export const addExpense = (expense) => ({
   expense
 });
 
-export const startAddExpense = (expenseData = {}) => (dispatch) => {
+export const startAddExpense = (expenseData = {}) => (dispatch, getState) => {
+  const uid = getState().auth.uid;
   const {
     description = '',
     note = '',
@@ -16,7 +17,7 @@ export const startAddExpense = (expenseData = {}) => (dispatch) => {
   const expense = { description, note, amount, createdAt };
 
   return db
-    .ref('expenses')
+    .ref(`users/${uid}/expenses`)
     .push(expense)
     .then((ref) => {
       dispatch(
@@ -34,12 +35,13 @@ export const removeExpense = ({ id } = {}) => ({
   id
 });
 
-export const startRemoveExpense = ({ id } = {}) => (dispatch) =>
-  db
-    .ref(`expenses/${id}`)
+export const startRemoveExpense = ({ id } = {}) => (dispatch, getState) => {
+  const uid = getState().auth.uid;
+  return db
+    .ref(`users/${uid}/expenses/${id}`)
     .remove()
     .then((ref) => dispatch(removeExpense({ id })));
-
+};
 // EDIT EXPENSE
 export const editExpense = (id, updates) => ({
   type: 'EDIT_EXPENSE',
@@ -47,20 +49,23 @@ export const editExpense = (id, updates) => ({
   updates
 });
 
-export const startEditExpense = (id, updates) => (dispatch) =>
-  db
-    .ref(`expenses/${id}`)
+export const startEditExpense = (id, updates) => (dispatch, getState) => {
+  const uid = getState().auth.uid;
+  return db
+    .ref(`users/${uid}/expenses/${id}`)
     .update(updates)
     .then((ref) => dispatch(editExpense(id, updates)));
+};
 
 export const setExpenses = (expenses) => ({
   type: 'SET_EXPENSES',
   expenses
 });
 
-export const startSetExpenses = () => (dispatch) =>
-  db
-    .ref('expenses')
+export const startSetExpenses = () => (dispatch, getState) => {
+  const uid = getState().auth.uid;
+  return db
+    .ref(`users/${uid}/expenses`)
     .once('value')
     .then((snapshot) => {
       const expenses = [];
@@ -73,3 +78,4 @@ export const startSetExpenses = () => (dispatch) =>
       });
       dispatch(setExpenses(expenses));
     });
+};
